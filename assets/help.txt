@@ -1,0 +1,9 @@
+rpk (Part of RIFT)
+RIFT Packages
+------------------
+
+install: Installs a package
+remove: Removes a package
+upgrade: Upgrades one or all packages
+
+------------------
