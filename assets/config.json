@@ -1,4 +1,4 @@
 {
-    "installLocation": "@HOME/rift/rift/plugins",
+    "installLocation": "@HOME/.rift/plugins",
     "pluginRepo": "https://raw.githubusercontent.com/openRIFT/plugins/main/plugins.rift"
 }
