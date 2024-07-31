@@ -10,6 +10,7 @@ from colorama import Fore, Style
 import requests
 import os
 import json
+import zipfile
 
 foundPackage = False
 terminalX = os.get_terminal_size().columns
@@ -61,17 +62,18 @@ def removePackage():
         file = f.readlines()
 
     for i in range(lines):
-        fileList = file[i]
-        fileItem = fileList.split(';')
-        global fileURL
-        fileURL = fileItem[1].replace('\n', '')
-        fileItem = fileItem[0].replace('\n', '')
-        
+        global foundPackage
+        if foundPackage is not True:
+            fileList = file[i]
+            fileItem = fileList.split(';')
+            global fileURL
+            fileURL = fileItem[1].replace('\n', '')
+            fileItem = fileItem[0].replace('\n', '')
 
         if fileItem == commandArgs:
             print(f'Found Package {Fore.LIGHTRED_EX}{commandArgs}{Style.RESET_ALL}!')
-            global foundPackage
             foundPackage = True
+            break
 
     if foundPackage is True:
         print('-' * terminalX)
@@ -81,8 +83,15 @@ def removePackage():
             print(f'Removing {Fore.LIGHTRED_EX}{commandArgs}{Style.RESET_ALL}...')
             try:
                 fileName = os.path.basename(fileURL)
-                os.remove(f'{removeLoc}/{fileName}')
+
+                if '.zip' in fileName:
+                    zip = zipfile.ZipFile(f'{removeLoc}/{fileName}')
+                    for i in range(len(zip.namelist())):
+                        os.remove(f'{removeLoc}/{zip.namelist()[i]}')
+                    os.remove(f'{removeLoc}/{fileName}')
+
                 print(f'{Fore.LIGHTMAGENTA_EX}Remove Complete!{Style.RESET_ALL}')
+
             except FileNotFoundError:
                 print(f'{Fore.YELLOW}{commandArgs}{Style.RESET_ALL} is not present in Plugins folder, finshing...')
         else:

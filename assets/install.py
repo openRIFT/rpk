@@ -82,6 +82,7 @@ def installPackage():
         if confInput == 'y':
             print(f'Installing {Fore.LIGHTGREEN_EX}{commandArgs}{Style.RESET_ALL}...')
             fileDownloader()
+            extractZip(fileName)
         else:
             print(f'{Fore.YELLOW}Install Canceled{Style.RESET_ALL}')
     else:
