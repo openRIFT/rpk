@@ -82,7 +82,8 @@ def installPackage():
         if confInput == 'y':
             print(f'Installing {Fore.LIGHTGREEN_EX}{commandArgs}{Style.RESET_ALL}...')
             fileDownloader()
-            extractZip(fileName)
+            if '.zip' in fileName:
+                extractZip(fileName)
         else:
             print(f'{Fore.YELLOW}Install Canceled{Style.RESET_ALL}')
     else:
@@ -104,7 +105,6 @@ def fileDownloader():
         errorHandle('Invalid install directory', 3)
 
 def extractZip(zip):
-    print(zip, installLoc)
     with zipfile.ZipFile(f'{installLoc}/{zip}', 'r') as zip_ref:
         zip_ref.extractall(installLoc)
 
