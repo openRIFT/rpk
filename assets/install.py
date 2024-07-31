@@ -10,6 +10,7 @@ from colorama import Fore, Style
 import requests
 import os
 import json
+import zipfile
 
 foundPackage = False
 terminalX = os.get_terminal_size().columns
@@ -61,17 +62,18 @@ def installPackage():
         file = f.readlines()
 
     for i in range(lines):
-        fileList = file[i]
-        fileItem = fileList.split(';')
-        global fileURL
-        fileURL = fileItem[1].replace('\n', '')
-        fileItem = fileItem[0].replace('\n', '')
-        
+        global foundPackage
+        if foundPackage is not True:
+            fileList = file[i]
+            fileItem = fileList.split(';')
+            global fileURL
+            fileURL = fileItem[1].replace('\n', '')
+            fileItem = fileItem[0].replace('\n', '')
 
         if fileItem == commandArgs:
             print(f'Found Package {Fore.LIGHTGREEN_EX}{commandArgs}{Style.RESET_ALL}!')
-            global foundPackage
             foundPackage = True
+            break
 
     if foundPackage is True:
         print('-' * terminalX)
@@ -99,6 +101,11 @@ def fileDownloader():
         print(f'{Fore.LIGHTMAGENTA_EX}Install Complete!{Style.RESET_ALL}')
     except FileNotFoundError:
         errorHandle('Invalid install directory', 3)
+
+def extractZip(zip):
+    print(zip, installLoc)
+    with zipfile.ZipFile(f'{installLoc}/{zip}', 'r') as zip_ref:
+        zip_ref.extractall(installLoc)
 
 readArgsFile()
 loadConfig()
