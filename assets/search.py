@@ -13,10 +13,11 @@ import json
 
 foundPackages = []
 terminalX = os.get_terminal_size().columns
+homeFolder = os.path.expanduser('~')
 
 # Load config
 def loadConfig():
-    f = open("assets/config.json", "r")
+    f = open(f"{homeFolder}/.rpk/config.json", "r")
     tmp_j = f.read()
     cfginfo = json.loads(tmp_j)
 
@@ -29,7 +30,7 @@ def loadConfig():
         installLoc = installLoc.replace('@HOME', os.path.expanduser('~'))
 
 def readArgsFile():
-    with open('assets/.args', 'r') as f:
+    with open(f'{homeFolder}/.rpk/.args', 'r') as f:
         global commandArgs
         commandArgs = f.read()
         f.close()
@@ -45,7 +46,7 @@ def downloadrpkfileList():
 
     try:
         r = requests.get((rpkURL), allow_redirects=True)
-        open('assets/plugins.rpk', 'wb').write(r.content)
+        open(f'{homeFolder}/.rpk//plugins.rpk', 'wb').write(r.content)
     except:  # noqa: E722
         errorHandle("Invalid URL", 1)
 
@@ -54,10 +55,10 @@ def searchPackages():
     print(f'Plugin repository: {Fore.LIGHTBLUE_EX}{rpkURL}{Style.RESET_ALL}')
     print(f'Attempting to find {Fore.LIGHTBLUE_EX}{commandArgs}{Style.RESET_ALL}...')
 
-    with open('assets/plugins.rpk', 'r') as f:
+    with open(f'{homeFolder}/.rpk//plugins.rpk', 'r') as f:
         lines = len(f.readlines())
 
-    with open('assets/plugins.rpk', 'r') as f:
+    with open(f'{homeFolder}/.rpk//plugins.rpk', 'r') as f:
         file = f.readlines()
 
     for i in range(lines):
